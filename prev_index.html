@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Birthday Card</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Dancing+Script:wght@700&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d1b69 50%, #1e1e2e 100%);
+            font-family: 'JetBrains Mono', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: auto;
+        }
+        
+        .card {
+            background: linear-gradient(145deg, #282a36, #44475a);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255, 121, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 233, 253, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(255, 184, 108, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff79c6, #8be9fd, #ffb86c, #50fa7b);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 10px;
+        }
+        
+        .hearts {
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            animation: heartBeat 2s ease-in-out infinite;
+            margin-bottom: 15px;
+        }
+        
+        .subtitle {
+            color: #ff79c6;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .content {
+            color: #f8f8f2;
+            line-height: 1.8;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .comment {
+            color: #6272a4;
+            font-style: italic;
+        }
+        
+        .string {
+            color: #f1fa8c;
+        }
+        
+        .keyword {
+            color: #ff79c6;
+            font-weight: 600;
+        }
+        
+        .function {
+            color: #50fa7b;
+        }
+        
+        .number {
+            color: #bd93f9;
+        }
+        
+        .highlight {
+            background: linear-gradient(90deg, rgba(255, 121, 198, 0.2), rgba(139, 233, 253, 0.2));
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .flags {
+            font-size: 1.2rem;
+        }
+        
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 121, 198, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: 'C++';
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            background: #ff79c6;
+            color: #282a36;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .signature {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .signature-name {
+            color: #ff79c6;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+        
+        .sparkle {
+            display: inline-block;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+        
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .floating-heart {
+            position: absolute;
+            color: #ff79c6;
+            font-size: 20px;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.3;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { transform: rotate(0deg) scale(1); opacity: 0.7; }
+            50% { transform: rotate(180deg) scale(1.2); opacity: 1; }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+        
+        @media (max-width: 768px) {
+            .card { padding: 20px; margin: 10px; }
+            .title { font-size: 2rem; }
+            .content { font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts">
+        <div class="floating-heart" style="left: 5%; animation-delay: 0s;">💖</div>
+        <div class="floating-heart" style="left: 15%; animation-delay: 1s;">💕</div>
+        <div class="floating-heart" style="left: 25%; animation-delay: 2s;">💝</div>
+        <div class="floating-heart" style="left: 35%; animation-delay: 3s;">💗</div>
+        <div class="floating-heart" style="left: 45%; animation-delay: 4s;">💖</div>
+        <div class="floating-heart" style="left: 55%; animation-delay: 5s;">💕</div>
+        <div class="floating-heart" style="left: 65%; animation-delay: 1.5s;">💝</div>
+        <div class="floating-heart" style="left: 75%; animation-delay: 2.5s;">💗</div>
+        <div class="floating-heart" style="left: 85%; animation-delay: 3.5s;">💖</div>
+        <div class="floating-heart" style="left: 95%; animation-delay: 4.5s;">💕</div>
+    </div>
+    
+    <div class="card">
+        <div class="header">
+            <div class="title">Happy Birthday, My Love</div>
+            <div class="hearts">🩷❤️🧡💛💚🩵💙💜🖤🩶🤍🤎</div>
+            <div class="subtitle">
+                <span class="sparkle">🍬</span>
+                My Dear SugarPlum
+                <span class="sparkle">🌸</span>
+            </div>
+        </div>
+        
+        <div class="content">
+            <p><span class="comment">// On this special day, I want to send a signal across the system bus straight to your heart 💖</span></p>
+            
+            <p>As the world runs another cycle around the sun ☀️, it's <span class="highlight">*your*</span> birthday - a <span class="keyword">high-priority interrupt</span> in the OS of my life. And let me tell you, no <span class="function">exception handler</span> could ever process how much you mean to me.</p>
+            
+            <p>You are the <span class="keyword">constant</span> in my life - not <span class="keyword">const</span> because you never change, but because your presence is always safe, reliable, and <span class="highlight">thread-safe</span> 🧵❤️.</p>
+            
+            <p>You are the oxygen in my logic gates, the <span class="keyword">try-block</span> in my exception-filled world, and the compiler that optimizes my messy thoughts into meaningful output.</p>
+            
+            <p>From the noisy threads of Pakistan <span class="flags">🇵🇰</span>, where our late-night function calls <span class="function">chaiAndLaughter()</span> would never terminate, to the quiet corners of Czech Republic <span class="flags">🇨🇿</span> - <em>though you never really let those threads idle either 😆</em> - you've created a multi-platform paradise.</p>
+            
+            <div class="code-block">
+                <span class="comment">// if (life.hasYou()) {</span><br>
+                <span class="comment">//     happiness = <span class="number">100</span>%;</span><br>
+                <span class="comment">// }</span>
+            </div>
+            
+            <p>Thank you for always being my fallback routine when life segfaults, for managing memory when I overflow with emotion, and for always <span class="keyword">return</span> love — even when my input is messy.</p>
+            
+            <p>Every day with you feels like a successful compile. Every moment with you is a well-documented commit in the version control of my soul.</p>
+            
+            <p>You've redefined every class of love I thought I knew. With you, I don't just run — I thrive at <span class="function">O(1)</span> joy. You're not just the object of my affection — you're the <span class="keyword">base class</span> of everything I value.</p>
+            
+            <p><span class="highlight">Happy Birthday, my sweet sugarplum 🍓</span> — the sparkle in my GUI and the calm in my CPU fan. Thank you for being my runtime support, my always-on background process, and the only one who can truly access my <span class="keyword">private</span> members. 😉</p>
+            
+            <p>I love you endlessly — in every encoding, every platform, and every namespace across timelines.</p>
+        </div>
+        
+        <div class="signature">
+            <p><span class="keyword">Forever yours,</span><br>
+            Your biggest fan 📣,<br>
+            Your partner in crime 🕵️‍♂️💻,<br>
+            Your <span class="function">#define EVERYTHING</span></p>
+            
+            <p><strong>With infinite loops of love,</strong></p>
+            
+            <div class="signature-name">Idrees.cpp ❤️</div>
+        </div>
+    </div>
+</body>
+</html>
